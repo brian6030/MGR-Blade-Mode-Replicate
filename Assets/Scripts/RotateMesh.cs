@@ -20,7 +20,7 @@ public class RotateMesh : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(Input.GetAxis("Mouse X"));
+        //Debug.Log(Input.GetAxis("Mouse X"));
         MeshRotate();
     }
 

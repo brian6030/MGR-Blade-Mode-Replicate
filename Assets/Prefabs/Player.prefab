@@ -846,7 +846,7 @@ GameObject:
   - component: {fileID: 1209695719286774586}
   - component: {fileID: 8797337501461179143}
   - component: {fileID: 4240934367467647228}
-  - component: {fileID: 4537179384720033721}
+  - component: {fileID: 4356199896712817168}
   m_Layer: 8
   m_Name: Player
   m_TagString: Player
@@ -1156,7 +1156,7 @@ MonoBehaviour:
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0}
     m_Visible: 1
---- !u!114 &4537179384720033721
+--- !u!114 &4356199896712817168
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1165,18 +1165,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 3236466536918146328}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 55f20f3ab7e4d1f44a7d57938e532075, type: 3}
+  m_Script: {fileID: 11500000, guid: 89780ecaecf4b83468da3bf36d76c87d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  anim: {fileID: 1022700018002483708}
-  footIk_offset: {x: 0, y: 0.12, z: 0}
-  bone: {fileID: 4864157502685015394}
-  ik_Weight: 1
-  lerpSpeed: 10
-  rayDistance: 5
-  fallMin: 0.65
-  fallMax: 0.95
-  leftKneeDummy: {fileID: 1090481896985070471}
+  IkActive: 1
+  WeightPosition: 1
+  WeightRotation: 0.3
+  offsetFoot: {x: 0, y: 0.08, z: 0}
+  RayMask:
+    serializedVersion: 2
+    m_Bits: 1
+  maxRayDistance: 1.3
+  DebugEnable: 1
+  FootRight: {fileID: 7674513198308291813}
+  FootLeft: {fileID: 2128813526581280207}
 --- !u!1 &3448208518990122898
 GameObject:
   m_ObjectHideFlags: 0
