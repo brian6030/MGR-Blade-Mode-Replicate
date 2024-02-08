@@ -8,43 +8,60 @@ public class MultipleSlice : MonoBehaviour
     public Material crossSectionMaterial;
 
     [SerializeField] KeyCode sliceKey = KeyCode.Mouse0;
-    [SerializeField] Vector3 boxSize = new Vector3(5, 0.00005f, 5);
-    [SerializeField] Color gizmoColor = Color.green;
+    [SerializeField] Vector3 boxSize = new Vector3(5, 0.1f, 5);
+    [SerializeField] LayerMask layerMask;
+    [SerializeField] float cutForce = 100f;
 
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(sliceKey)) 
         {
-            Collider[] colliders = Physics.OverlapBox(transform.position, boxSize, transform.rotation, ~LayerMask.GetMask("solid"));
+            Slice();
+        }
+    }
 
-            foreach (Collider collider in colliders) 
+    void Slice() 
+    {
+        Collider[] hits = Physics.OverlapBox(transform.position, boxSize, transform.rotation, layerMask);
+
+        if (hits.Length <= 0)
+            return;
+
+        for (int i = 0; i < hits.Length; i++)
+        {
+            SlicedHull hull = SliceObject(hits[i].gameObject, crossSectionMaterial);
+            if (hull != null)
             {
-                Destroy(collider.gameObject);
-                SlicedHull hull = collider.gameObject.Slice(transform.position, transform.forward);
+                GameObject bottom = hull.CreateLowerHull(hits[i].gameObject, crossSectionMaterial);
+                GameObject top = hull.CreateUpperHull(hits[i].gameObject, crossSectionMaterial);
 
-                if (hull != null) 
-                {
-                    GameObject lower = hull.CreateLowerHull(collider.gameObject, crossSectionMaterial);
-                    GameObject upper = hull.CreateUpperHull(collider.gameObject, crossSectionMaterial);
-                    GameObject[] objs = new GameObject[] { lower, upper };
+                AddHullComponents(bottom);
+                AddHullComponents(top);
 
-                    foreach (GameObject o in objs) 
-                    {
-                        if(o.GetComponent<Rigidbody>() != null)
-                            o.AddComponent<Rigidbody>();
-                        if(o.GetComponent<MeshCollider>() != null)
-                            o.AddComponent<MeshCollider>().convex = true;
-                    }
-                }
+                Destroy(hits[i].gameObject);
             }
         }
     }
 
-    void OnDrawGizmosSelected()
+    void AddHullComponents(GameObject obj) 
     {
-        Gizmos.color = gizmoColor;
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
-        Gizmos.DrawWireCube(Vector3.zero, boxSize);
+        obj.layer = 6;
+
+        Rigidbody rb = obj.AddComponent<Rigidbody>();
+        rb.interpolation = RigidbodyInterpolation.Interpolate;
+        rb.AddExplosionForce(cutForce, obj.transform.position, 20);
+
+        obj.AddComponent<MeshCollider>().convex = true;
     }
+
+    public SlicedHull SliceObject(GameObject obj, Material crossSectionMaterial = null)
+    {
+        // slice the provided object using the transforms of this object
+        if (obj.GetComponent<MeshFilter>() == null)
+            return null;
+
+        return obj.Slice(transform.position, transform.forward, crossSectionMaterial);
+    }
+
 }
