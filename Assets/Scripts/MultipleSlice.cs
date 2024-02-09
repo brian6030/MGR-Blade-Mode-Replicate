@@ -11,6 +11,7 @@ public class MultipleSlice : MonoBehaviour
     [SerializeField] Vector3 boxSize = new Vector3(5, 0.1f, 5);
     [SerializeField] LayerMask layerMask;
     [SerializeField] float cutForce = 100f;
+    [SerializeField] float cutForceRadius = 30f;
 
     // Update is called once per frame
     void Update()
@@ -50,7 +51,7 @@ public class MultipleSlice : MonoBehaviour
 
         Rigidbody rb = obj.AddComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
-        rb.AddExplosionForce(cutForce, obj.transform.position, 20);
+        rb.AddExplosionForce(cutForce, obj.transform.position, cutForceRadius);
 
         obj.AddComponent<MeshCollider>().convex = true;
     }

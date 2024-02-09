@@ -1,9 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static RotateMesh;
 
-public class RotateMesh : MonoBehaviour
+public class RotateCuttingQuad : MonoBehaviour
 {
     public float RotationSpeed = 1.0f;
 
@@ -17,11 +16,28 @@ public class RotateMesh : MonoBehaviour
 
     public bool InverseDirection = false;
 
+    Transform planeReference;
+    [SerializeField] Transform planeReferenceCopy;
+    [SerializeField] Animator animator;
+
+    void Start()
+    {
+        planeReference = transform.GetChild(0);
+    }
+
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(Input.GetAxis("Mouse X"));
+        SetAnimator();
         MeshRotate();
+    }
+
+    void SetAnimator()
+    {
+        planeReferenceCopy.position = planeReference.position;
+
+        animator.SetFloat("PlaneX", planeReferenceCopy.localPosition.x);
+        animator.SetFloat("PlaneY", planeReferenceCopy.localPosition.y - 1);
     }
 
     void MeshRotate() 

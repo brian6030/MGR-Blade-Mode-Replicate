@@ -123,10 +123,14 @@ namespace StarterAssets
             }
         }
 
+      
         PlayerController playerController;
+        BladeModeController bladeModeController;
         private void Awake()
         {
             playerController = GetComponent<PlayerController>();
+            bladeModeController = GetComponent<BladeModeController>();
+
             // get a reference to our main camera
             if (_mainCamera == null)
             {
@@ -215,7 +219,7 @@ namespace StarterAssets
 
         private void Move()
         {
-            if (playerController.isEquipping || playerController.isBlocking || playerController.isAttacking) 
+            if (playerController.isEquipping || playerController.isBlocking || playerController.isAttacking || bladeModeController.IsBladeMode) 
             {
                 return;
             }
@@ -307,7 +311,7 @@ namespace StarterAssets
                 }
 
                 // Jump
-                if (_input.jump && _jumpTimeoutDelta <= 0.0f)
+                if (_input.jump && _jumpTimeoutDelta <= 0.0f && !bladeModeController.IsBladeMode)
                 {
                     // the square root of H * -2 * G = how much velocity needed to reach desired height
                     _verticalVelocity = Mathf.Sqrt(JumpHeight * -2f * Gravity);

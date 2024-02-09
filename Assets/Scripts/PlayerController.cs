@@ -13,12 +13,19 @@ public class PlayerController : MonoBehaviour
     [SerializeField] KeyCode blockKey = KeyCode.Mouse1;
     [SerializeField] KeyCode attackKey = KeyCode.Mouse0;
 
+    BladeModeController bladeModeController;
+
     public bool isEquipping;
     public bool isEquipped;
     public bool isBlocking;
     public bool isAttacking;
     float timeSinceAttack;
     int currentAttack = 0;
+
+    void Start()
+    {
+        bladeModeController = GetComponent<BladeModeController>();
+    }
 
     public void Update()
     {
@@ -62,7 +69,7 @@ public class PlayerController : MonoBehaviour
 
     void Block()
     {
-        if (Input.GetKey(blockKey) && playerAnimator.GetBool("Grounded"))
+        if (Input.GetKey(blockKey) && playerAnimator.GetBool("Grounded") && !bladeModeController.IsBladeMode)
         {
             playerAnimator.SetBool("Block", true);
             isBlocking = true;
@@ -78,7 +85,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(attackKey) && playerAnimator.GetBool("Grounded") && timeSinceAttack > 0.8f) 
         {
-            if (!isEquipped)
+            if (!isEquipped || bladeModeController.IsBladeMode)
             {
                 return;
             }
