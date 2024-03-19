@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class RotateCuttingQuad : MonoBehaviour
 {
@@ -34,7 +35,7 @@ public class RotateCuttingQuad : MonoBehaviour
 
     void SetAnimator()
     {
-        planeReferenceCopy.position = planeReference.position;
+        SetTransform(planeReferenceCopy, planeReference);
 
         animator.SetFloat("PlaneX", planeReferenceCopy.localPosition.x);
         animator.SetFloat("PlaneY", planeReferenceCopy.localPosition.y - 1);
@@ -70,4 +71,19 @@ public class RotateCuttingQuad : MonoBehaviour
         // Rotate the GameObject's transform around the selected axis
         transform.Rotate(axis, rotationAmount);
     }
+
+    void SetTransform(Transform transformCurrent, Transform transformTarget, bool isLocal = false) 
+    {
+        if (isLocal)
+        {
+            transformCurrent.localPosition = transformTarget.localPosition;
+            transformCurrent.localRotation = transformTarget.localRotation;
+        }
+        else 
+        {
+            transformCurrent.position = transformTarget.position;
+            transformCurrent.rotation = transformTarget.rotation;
+        }
+    }
+
 }

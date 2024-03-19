@@ -13,12 +13,22 @@ public class MultipleSlice : MonoBehaviour
     [SerializeField] float cutForce = 100f;
     [SerializeField] float cutForceRadius = 30f;
 
+    [SerializeField] RotateCuttingQuad rotateCuttingQuad;
+
+    Animator referencePointAnimator;
+
+    private void Start()
+    {
+        referencePointAnimator = GetComponent<Animator>();
+    }
+
     // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(sliceKey)) 
         {
             Slice();
+            referencePointAnimator.SetTrigger("Slice");
         }
     }
 
