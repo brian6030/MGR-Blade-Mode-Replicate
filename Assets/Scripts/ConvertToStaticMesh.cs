@@ -5,22 +5,23 @@ using UnityEngine;
 public class ConvertToStaticMesh : MonoBehaviour
 {
     [SerializeField] SkinnedMeshRenderer skinnedMesh;
+    Collider cuttingQuad;
 
-    bool isStaticMesh = true;
-
-    // Start is called before the first frame update
     void Start()
     {
-      
+        cuttingQuad = GetComponent<Collider>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Backspace) && isStaticMesh) 
+        
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("CuttingQuad")) 
         {
             CreateStaticMesh();
-            isStaticMesh = false;
         }
     }
 
@@ -28,15 +29,14 @@ public class ConvertToStaticMesh : MonoBehaviour
     {
         Mesh staticMesh = new Mesh();
         skinnedMesh.BakeMesh(staticMesh);
-        GameObject newGo = new GameObject();
-        //newGo.tag = "Target";
-        newGo.layer = 6;
-        newGo.transform.position = skinnedMesh.transform.position;
-        newGo.transform.rotation = skinnedMesh.transform.rotation;
-        newGo.AddComponent<MeshFilter>().sharedMesh = staticMesh;
-        newGo.AddComponent<MeshRenderer>().sharedMaterials = skinnedMesh.sharedMaterials;
-        newGo.AddComponent<Rigidbody>().useGravity = false;
-        newGo.AddComponent<BoxCollider>();
+        GameObject newGameObj = new GameObject();
+        newGameObj.layer = 6;
+        newGameObj.transform.position = skinnedMesh.transform.position;
+        newGameObj.transform.rotation = skinnedMesh.transform.rotation;
+        newGameObj.AddComponent<MeshFilter>().sharedMesh = staticMesh;
+        newGameObj.AddComponent<MeshRenderer>().sharedMaterials = skinnedMesh.sharedMaterials;
+        newGameObj.AddComponent<Rigidbody>().useGravity = false;
+        newGameObj.AddComponent<BoxCollider>();
         Destroy(this.gameObject);
     }
 }

@@ -45,7 +45,8 @@ public class RotateCuttingQuad : MonoBehaviour
     {
         float rotationAmount;
 
-        rotationAmount = Input.GetAxis("Mouse X") * RotationSpeed * Time.deltaTime;
+        //rotationAmount = Input.GetAxis("Mouse X") * RotationSpeed * Time.deltaTime;
+        rotationAmount = Input.GetAxis("Mouse ScrollWheel") * RotationSpeed * Time.deltaTime;
 
         if (InverseDirection) 
         {
