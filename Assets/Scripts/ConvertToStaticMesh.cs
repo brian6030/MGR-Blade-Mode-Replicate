@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ConvertToStaticMesh : MonoBehaviour
 {
@@ -17,11 +18,13 @@ public class ConvertToStaticMesh : MonoBehaviour
         
     }
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("CuttingQuad")) 
+        if (other.CompareTag("CuttingQuad") && Input.GetKeyDown(KeyCode.Mouse0)) 
         {
+            Debug.Log("Cut");
             CreateStaticMesh();
+            other.gameObject.GetComponent<MultipleSlice>().Slice();
         }
     }
 

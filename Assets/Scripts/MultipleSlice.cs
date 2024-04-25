@@ -32,7 +32,7 @@ public class MultipleSlice : MonoBehaviour
         }
     }
 
-    void Slice() 
+    public void Slice() 
     {
         Collider[] hits = Physics.OverlapBox(transform.position, boxSize, transform.rotation, layerMask);
 
