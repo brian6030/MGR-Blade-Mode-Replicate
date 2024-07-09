@@ -7,6 +7,7 @@ public class ConvertToStaticMesh : MonoBehaviour
 {
     [SerializeField] SkinnedMeshRenderer skinnedMesh;
     Collider cuttingQuad;
+    bool isMouseDown = false;
 
     void Start()
     {
@@ -15,12 +16,15 @@ public class ConvertToStaticMesh : MonoBehaviour
 
     void Update()
     {
-        
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+            isMouseDown = true;
+        else
+            isMouseDown = false;
     }
 
     void OnTriggerStay(Collider other)
     {
-        if (other.CompareTag("CuttingQuad") && Input.GetKeyDown(KeyCode.Mouse0)) 
+        if (other.CompareTag("CuttingQuad") && isMouseDown) 
         {
             Debug.Log("Cut");
             CreateStaticMesh();
